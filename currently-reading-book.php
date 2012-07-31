@@ -61,7 +61,7 @@
 
 ?>
 
-			<br /><a href="<?php echo $crb_settings['book_preview']; ?>">
+			<a href="<?php echo $crb_settings['book_preview']; ?>">
 	        <img src="<?php echo $crb_settings['book_cover'] ?>" /></a>
 
 <?php
@@ -126,7 +126,7 @@
 		}
 
 ?>
-		<br /><br />
+
             
 <?php
 	
