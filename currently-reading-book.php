@@ -4,7 +4,7 @@
 		Plugin Name: Currently Reading Book
 		Plugin URI: http://wpplugz.is-leet.com
 		Description: A simple wordpress plugin that shows the current book you are reading along with book preview and book information.
-		Version: 0.1
+		Version: 0.11
 		Author: Bostjan Cigan
 		Author URI: http://bostjan.gets-it.net
 		License: GPL v2
@@ -296,81 +296,8 @@
 			
 			// The widget code and the widgeet output
 			
-			$crb_settings = get_option('currently_reading_book_settings');
-
-			if($crb_settings['visibility_settings']['show_preview']) {
-
-?>
-
-				<a href="<?php echo $crb_settings['book_preview']; ?>">
-	            <img src="<?php echo $crb_settings['book_cover'] ?>" /></a>
-<?php
-
-			}
+			currently_reading_book();
 			
-			else {
-
-?>
-
-				<br />
-	            <img src="<?php echo $crb_settings['book_cover'] ?>" />
-
-
-<?php
-			}
-
-			if($crb_settings['visibility_settings']['show_custom_msg']) {
-				
-?>
-				<br /><em> <?php echo stripslashes(htmlentities($crb_settings['book_custom_msg'])); ?> </em><br />
-<?php
-
-			}
-
-
-			if($crb_settings['visibility_settings']['show_title']) {
-?>
-				<br /><em><?php echo stripslashes(htmlentities($crb_settings['book_title'])); ?></em>
-<?php
-			}
-			
-			if($crb_settings['visibility_settings']['show_author']) {
-				
-?>
-				<br /><strong>Author:</strong> <?php echo stripslashes(htmlentities($crb_settings['book_author'])); ?>
-<?php
-
-			}
-
-			if($crb_settings['visibility_settings']['show_isbn']) {
-				
-?>
-				<br /><strong>ISBN:</strong> <?php echo stripslashes(htmlentities($crb_settings['book_isbn'])); ?>
-<?php
-
-			}
-
-			if($crb_settings['visibility_settings']['show_previous']) {
-				
-?>
-				<br /><br /><?php echo stripslashes(htmlentities($crb_settings['before_reading_msg'])); ?><em> <?php echo stripslashes(htmlentities($crb_settings['previous_book_title'])); ?></em>.
-<?php
-
-			}
-
-			if($crb_settings['visibility_settings']['show_powered_by']) {
-				
-?>
-				<br /><br />Powered by <a href="http://wpplugz.is-leet.com">wpPlugz</a>.
-            
-<?php
-
-			}
-			
-?>
-			<br />
-<?php
-
 			// End of widget output
 			
 			echo $after_widget;
