@@ -45,7 +45,7 @@ None at the moment.
 
 == Author ==
 
-The author of this plugin is Boštjan Cigan, visit the [homepage](http://bostjan.gets-it.net "homepage").
+The author of this plugin is Bostjan Cigan, visit the [homepage](http://bostjan.gets-it.net "homepage").
 
 == Homepage ==
 
