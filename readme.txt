@@ -4,7 +4,7 @@ Donate link: http://wpplugz.is-leet.com/
 Tags: reading book, currently reading, isbn book, my library, currently reading book, google books currently reading, isbn currently reading, simple currently reading book
 Requires at least: 2.0.2
 Tested up to: 3.4.1
-Stable tag: 0.1
+Stable tag: 1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -39,6 +39,12 @@ None at the moment.
 3. Using the plugin as a widget
 
 == Changelog ==
+
+= 1.0 =
+* Updated to version 1.0, marked as stable.
+
+= 0.11 =
+* Minor code optimization.
 
 = 0.1 =
 * The initial version of the plugin.
