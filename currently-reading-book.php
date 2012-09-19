@@ -3,8 +3,8 @@
 	/* 
 		Plugin Name: Currently Reading Book
 		Plugin URI: http://wpplugz.is-leet.com
-		Description: A simple wordpress plugin that shows the current book you are reading along with book preview and book information.
-		Version: 1.0
+		Description: A simple plugin that shows the current book you are reading along with book preview and book information.
+		Version: 1.1
 		Author: Bostjan Cigan
 		Author URI: http://bostjan.gets-it.net
 		License: GPL v2
@@ -81,14 +81,14 @@
 		if($crb_settings['visibility_settings']['show_custom_msg']) {
 				
 ?>
-			<br /><em> <?php echo stripslashes(htmlentities($crb_settings['book_custom_msg'])); ?> </em><br />
+			<br /><em> <?php echo stripslashes($crb_settings['book_custom_msg']); ?> </em><br />
 <?php
 
 		}
 
 		if($crb_settings['visibility_settings']['show_title']) {
 ?>
-			<br /><em><?php echo stripslashes(htmlentities($crb_settings['book_title'])); ?></em>
+			<br /><em><?php echo stripslashes($crb_settings['book_title']); ?></em>
 <?php
 		}
 			
@@ -111,7 +111,20 @@
 		if($crb_settings['visibility_settings']['show_previous']) {
 				
 ?>
-			<br /><br /><?php echo stripslashes(htmlentities($crb_settings['before_reading_msg'])); ?><em> <?php echo stripslashes(htmlentities($crb_settings['previous_book_title'])); ?></em>.
+			<br /><br /><?php echo stripslashes($crb_settings['before_reading_msg']); ?><em> 
+
+<?php 
+
+		if(strlen($crb_settings['previous_book_title']) > 0) {
+			echo stripslashes($crb_settings['previous_book_title']);
+		}
+		
+		else {
+			echo 'nothing';	
+		}
+
+?>
+</em>.
 <?php
 
 		}
@@ -166,7 +179,7 @@
 				$crb_settings['previous_book_title'] = $previous_book;
 			}
 			$custom_msg = html_entity_decode($_POST['crb_custom_msg']);
-			$before_msg = html_entity_decode($_POST['before_reading_msg']);
+			$before_msg = html_entity_decode($_POST['crb_before_msg']);
 			$book = get_book_data($isbn);
 			$crb_settings['book_custom_msg'] = $custom_msg;
 			$crb_settings['book_isbn'] = $book->getISBN();
@@ -174,41 +187,125 @@
 			$crb_settings['book_author'] = $book->getAuthor();
 			$crb_settings['book_cover'] = $book->getCoverURL();
 			$crb_settings['book_preview'] = $book->getBookPreviewURL();
+			$crb_settings['before_reading_msg'] = $before_msg;
 			update_option('currently_reading_book_settings', $crb_settings);
 		}
 
 		$crb_settings = get_option('currently_reading_book_settings');
 		
 ?>
-		<div id="icon-options-general" class="icon32"></div><h2>Currently Reading Book</h2>
-		<div id="poststuff">
-        	<div class="postbox"><h3>Settings</h3>
-            	<div class="inside less">
-            		<p><strong><font color="red"><?php echo $message; ?></font></strong></p>
-					<form method="post" action="">
-					<p><strong>ISBN</strong> <br /><input type="text" name="crb_isbn" value="<?php echo stripslashes(htmlentities($crb_settings['book_isbn'])); ?>" /> (13 digit number on the back of the book, <a href="http://en.wikipedia.org/wiki/Isbn">read more</a>)</p>
-					<p><strong>Your book message</strong> <br /><textarea rows="10" cols="50" name="crb_custom_msg"><?php echo stripslashes(htmlentities($crb_settings['book_custom_msg'])); ?></textarea></p>
-					<p><strong>Previous book prefix</strong> <br /><input size="50" type="text" name="crb_before_msg" value="<?php echo stripslashes(htmlentities($crb_settings['before_reading_msg'])); ?>" /> (if your prefix is 'Before this I was reading', the ouput would be 'Before this I was reading Game Coding Complete')</p>
-					<p><strong>Previous book title</strong> <br /><input size="50" type="text" name="crb_previous_book" value="<?php echo stripslashes(htmlentities($crb_settings['previous_book_title'])); ?>" /></p>
-	                <p><strong>Show</strong><br />
-    	            <input type="checkbox" name="crb_show_isbn" value="true" <?php if($crb_settings['visibility_settings']['show_isbn'] == true) { ?>checked="checked"<?php } ?> /> ISBN<br />
-        	        <input type="checkbox" name="crb_show_title" value="true" <?php if($crb_settings['visibility_settings']['show_title'] == true) { ?>checked="checked"<?php } ?> /> Book title<br />
-					<input type="checkbox" name="crb_show_author" value="true" <?php if($crb_settings['visibility_settings']['show_author'] == true) { ?>checked="checked"<?php } ?> /> Book author<br />
-					<input type="checkbox" name="crb_show_preview" value="true" <?php if($crb_settings['visibility_settings']['show_preview'] == true) { ?>checked="checked"<?php } ?> /> Book preview<br />
-					<input type="checkbox" name="crb_show_previous" value="true" <?php if($crb_settings['visibility_settings']['show_previous'] == true) { ?>checked="checked"<?php } ?> /> Previous book<br />
-  					<input type="checkbox" name="crb_show_custom_msg" value="true" <?php if($crb_settings['visibility_settings']['show_custom_msg'] == true) { ?>checked="checked"<?php } ?> /> Your book message<br />
-  					<input type="checkbox" name="crb_show_powered_by" value="true" <?php if($crb_settings['visibility_settings']['show_powered_by'] == true) { ?>checked="checked"<?php } ?> /> Powered by message (shows powered by wpPlugz message - thank you for supporting this plugin!)<br /><br />
-					<input type="submit" name="Submit" class="button-primary" value="<?php esc_attr_e('Update options') ?>" />
-					</form>
-		            </div>
-				</div>
-        		<div class="postbox"><h3>About</h3>
-            		<div class="inside less">
-						<p>Thank you for using this plugin. That means you wanted to have the same thing on your blog than me, to tell your readers what you're currently reading.</p>
-						<p>Visit the official webiste @ <a href="http://wpplugz.is-leet.com">wpPlugz</a>.</p>
-            			<p>To use it, add <pre>< ?php currently_reading_book(); ? ></pre> to your template (where you want to output the text) or if your theme supports widgets, use the widget.</p></div>
-    	        </div>
+
+		<div id="icon-options-general" class="icon32"></div><h2>Currently Reading Book Settings</h2>
+<?php
+
+		if(strlen($message) > 0) {
+		
+?>
+
+			<div id="message" class="updated">
+				<p><strong><?php echo $message; ?></strong></p>
 			</div>
+
+<?php
+			
+		}
+
+?>
+        
+                <form method="post" action="">
+				<table class="form-table">
+					<tr>
+						<th scope="row"><img src="<?php echo plugin_dir_url(__FILE__).'data/book.png'; ?>" height="96px" width="96px" /></th>
+						<td>
+							<p>Thank you for using this plugin.</p> 
+                            <p>That means you wanted to have the same thing on your blog than me, to tell your readers what you're currently reading.</p>
+							<p>Visit the official website @ <a href="http://wpplugz.is-leet.com">wpPlugz</a>.</p>
+                        </td>
+					</tr>		
+					<tr>
+						<th scope="row"><label for="crb_isbn">ISBN</label></th>
+						<td>
+							<input type="text" name="crb_isbn" value="<?php echo stripslashes(htmlentities($crb_settings['book_isbn'])); ?>" />
+							<br />
+            				<span class="description">13 digit number on the back of the book, <a href="http://en.wikipedia.org/wiki/Isbn">read more</a>.</span>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><label for="crb_isbn">Your book message</label></th>
+						<td>
+		                    <textarea rows="5" cols="50" name="crb_custom_msg"><?php echo stripslashes(htmlentities($crb_settings['book_custom_msg'])); ?></textarea>		
+							<br />
+            				<span class="description">A custom message that will be outputted in the widget (thoughts on the book etc.).</span>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><label for="crb_before_msg">Previous book prefix</label></th>
+						<td>
+							<input size="50" type="text" name="crb_before_msg" value="<?php echo stripslashes(htmlentities($crb_settings['before_reading_msg'])); ?>" />
+                            <br /> 
+            				<span class="description">If your prefix is 'Before this I was reading', the ouput would be 'Before this I was reading Game Coding Complete'.</span>
+						</td>
+					</tr>		
+					<tr>
+						<th scope="row"><label for="crb_show_isbn">Show ISBN</label></th>
+						<td>
+		    	            <input type="checkbox" name="crb_show_isbn" value="true" <?php if($crb_settings['visibility_settings']['show_isbn'] == true) { ?>checked="checked"<?php } ?> />
+							<br />
+            				<span class="description">Check to show ISBN in widget output.</span>
+						</td>
+					</tr>		
+					<tr>
+						<th scope="row"><label for="crb_show_title">Show Title</label></th>
+						<td>
+    		    	        <input type="checkbox" name="crb_show_title" value="true" <?php if($crb_settings['visibility_settings']['show_title'] == true) { ?>checked="checked"<?php } ?> />
+							<br />
+            				<span class="description">Check to show book title in widget output.</span>
+						</td>
+					</tr>		
+					<tr>
+						<th scope="row"><label for="crb_show_author">Show Book Author</label></th>
+						<td>
+							<input type="checkbox" name="crb_show_author" value="true" <?php if($crb_settings['visibility_settings']['show_author'] == true) { ?>checked="checked"<?php } ?> />							
+                            <br />
+            				<span class="description">Check to show book author in widget output.</span>
+						</td>
+					</tr>		
+					<tr>
+						<th scope="row"><label for="crb_show_preview">Show Book Preview</label></th>
+						<td>
+    		    	  		<input type="checkbox" name="crb_show_preview" value="true" <?php if($crb_settings['visibility_settings']['show_preview'] == true) { ?>checked="checked"<?php } ?> />
+							<br />
+            				<span class="description">If checked, the book cover will link to a webpage with the book preview.</span>
+						</td>
+					</tr>		
+					<tr>
+						<th scope="row"><label for="crb_show_previous">Show Previous book</label></th>
+						<td>
+							<input type="checkbox" name="crb_show_previous" value="true" <?php if($crb_settings['visibility_settings']['show_previous'] == true) { ?>checked="checked"<?php } ?> />							
+                            <br />
+            				<span class="description">Check to show the previous book title in widget output.</span>
+						</td>
+					</tr>		
+					<tr>
+						<th scope="row"><label for="crb_show_custom_msg">Show Custom Message</label></th>
+						<td>
+		  					<input type="checkbox" name="crb_show_custom_msg" value="true" <?php if($crb_settings['visibility_settings']['show_custom_msg'] == true) { ?>checked="checked"<?php } ?> /> 							
+                            <br />
+            				<span class="description">Check to show your custom book message.</span>
+						</td>
+					</tr>		
+					<tr>
+						<th scope="row"><label for="crb_show_powered_by">Show Powered by Message</label></th>
+						<td>
+		  					<input type="checkbox" name="crb_show_powered_by" value="true" <?php if($crb_settings['visibility_settings']['show_powered_by'] == true) { ?>checked="checked"<?php } ?> />
+                            <br />
+                            <span class="description">Check to show 'Powered by wpPlugz' in widget output (optional, if you decide to check it, thank you for your support).</span>
+						</td>
+					</tr>		
+				</table>					
+				<p><input type="submit" name="Submit" class="button-primary" value="<?php esc_attr_e('Update options') ?>" /></p>
+				</form>
+
 
 <?
 
