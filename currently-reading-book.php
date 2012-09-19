@@ -215,7 +215,7 @@
                 <form method="post" action="">
 				<table class="form-table">
 					<tr>
-						<th scope="row"><img src="<?php echo plugin_dir_url(__FILE__).'data/book.png'; ?>" height="96px" width="96px" /></th>
+						<th scope="row"><img src="<?php echo plugin_dir_url(__FILE__).'book.png'; ?>" height="96px" width="96px" /></th>
 						<td>
 							<p>Thank you for using this plugin.</p> 
                             <p>That means you wanted to have the same thing on your blog than me, to tell your readers what you're currently reading.</p>
