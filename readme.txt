@@ -1,6 +1,6 @@
 === Plugin Name ===
 Contributors: ZeroCool51
-Donate link: http://wpplugz.is-leet.com/
+Donate link: http://gum.co/currently-reading-book
 Tags: reading book, currently reading, isbn book, my library, currently reading book, google books currently reading, isbn currently reading, simple currently reading book
 Requires at least: 2.0.2
 Tested up to: 3.4.1
