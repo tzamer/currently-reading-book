@@ -4,7 +4,7 @@ Donate link: http://gum.co/currently-reading-book
 Tags: reading book, currently reading, isbn book, my library, currently reading book, google books currently reading, isbn currently reading, simple currently reading book
 Requires at least: 2.0.2
 Tested up to: 3.4.1
-Stable tag: 1.2
+Stable tag: 1.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,7 +12,7 @@ A simple wordpress plugin that shows the current book you are reading along with
 
 == Description ==
 
-This is a simple wordpress plugin that shows which book(s) you are currently reading. It uses the Google Books API, and can show the covers as well as the previews of the books.
+This is a simple wordpress plugin that shows which book(s) you are currently reading. It uses the Google Books and OpenLibrary APIs, and can show the covers as well as the previews of the books.
 
 What this plugin offers:
 
@@ -41,16 +41,16 @@ None at the moment.
 == Changelog ==
 
 = 1.2.1 =
-* Fixed non saving bug
+* If a book isn't found in Google Books, it now also uses Openlibrary APIs.
 
 = 1.2 =
-* Added the option to open book preview in new window
+* Added the option to open book preview in new window.
 
 = 1.1 =
-* Changed admin area
+* Changed admin area.
 * Fixed non-update 'Previously reading book' bug
 * Fixed 'not accepting html tags' in custom book description bug
-* Fixed output bug if previous book wasn't inputted yet
+* Fixed output bug if previous book wasn't inputted yet.
 
 = 1.0 =
 * Updated to version 1.0, marked as stable.
