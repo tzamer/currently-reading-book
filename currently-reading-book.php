@@ -22,7 +22,7 @@
 	function currently_reading_book_install() {
 		
 		$plugin_options = array(
-			'version' => 1.2,
+			'version' => 1.21,
 			'book_isbn' => '',
 			'book_title' => '',
 			'book_author' => '',
@@ -47,15 +47,15 @@
 	}
 
 	$options = get_option('currently_reading_book_settings');
-	if(!isset($options['version'])) {
+	if(!isset($options['version']) || ((float) $options['version']) < 1.21) {
 		update_currently_reading_book();
 	} 
 
 	function update_currently_reading_book() {
 
 		$options = get_option('currently_reading_book_settings');
-		$options['version'] = 1.2;
-		$options['preview_new_window'] = false;
+		$options['version'] = 1.21;
+		$options['preview_new_window'] = (isset($options['preview_new_window'])) ? $options['preview_new_window'] : false;
 		update_option('currently_reading_book_settings', $options);	
 
 	}
@@ -199,6 +199,10 @@
 			$custom_msg = html_entity_decode($_POST['crb_custom_msg']);
 			$before_msg = html_entity_decode($_POST['crb_before_msg']);
 			$book = get_book_data($isbn);
+			$title = $book->getTitle();
+			if(!isset($title)) {
+				$message = $message." The book with the specified ISBN {$isbn} was not found.";
+			}
 			$crb_settings['book_custom_msg'] = $custom_msg;
 			$crb_settings['book_isbn'] = $book->getISBN();
 			$crb_settings['book_title'] = $book->getTitle();
@@ -235,9 +239,8 @@
 					<tr>
 						<th scope="row"><img src="<?php echo plugin_dir_url(__FILE__).'book.png'; ?>" height="96px" width="96px" /></th>
 						<td>
-							<p>Thank you for using this plugin.</p> 
-                            <p>That means you wanted to have the same thing on your blog than me, to tell your readers what you're currently reading.</p>
-							<p>Visit the official website @ <a href="http://wpplugz.is-leet.com">wpPlugz</a>.</p>
+							<p>Thank you for using this plugin. If you like the plugin, you can <a href="http://gum.co/currently-reading-book">buy me a cup of coffee</a><script type="text/javascript" src="https://gumroad.com/js/gumroad-button.js"></script><script type="text/javascript" src="https://gumroad.com/js/gumroad.js"></script> :)</p>  
+                            <p>You can visit the official website @ <a href="http://wpplugz.is-leet.com">wpPlugz</a>.</p>
                         </td>
 					</tr>		
 					<tr>
@@ -340,22 +343,52 @@
 	// Get the book data using Google Books API
 	function get_book_data($isbn) {
 		
+		$url = "https://www.googleapis.com/books/v1/volumes?q=".$isbn;
+		
 		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_URL, "https://www.googleapis.com/books/v1/volumes?q=".$isbn);
+		curl_setopt($curl, CURLOPT_URL, $url);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 		
 		$result = curl_exec($curl);
 		curl_close($curl);
+		
 		$book_array = (array) json_decode($result, true);
-		$book_title = $book_array["items"][0]["volumeInfo"]["title"];
-		$book_author = $book_array["items"][0]["volumeInfo"]["authors"][0];
-		$book_cover_url = $book_array["items"][0]["volumeInfo"]["imageLinks"]["thumbnail"];
-		$book_isbn = $book_array["items"][0]["volumeInfo"]["industryIdentifiers"][1]["identifier"]; // ISBN13
-		$book_preview_url = $book_array["items"][0]["accessInfo"]["webReaderLink"];
+		
+		if($book_array["totalItems"] == 0) {
+			$url = "http://openlibrary.org/api/books?bibkeys=ISBN:{$isbn}&jscmd=details&format=json";
+			
+			$curl = curl_init();
+			curl_setopt($curl, CURLOPT_URL, $url);
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		
+			$result = curl_exec($curl);
+			curl_close($curl);
+	
+			$book_array = (array) json_decode($result, true);
+			
+			$book_title = $book_array["ISBN:{$isbn}"]["details"]["title"];
+			$book_author = $book_array["ISBN:{$isbn}"]["details"]["authors"][0]["name"];
+			$book_cover_url = $book_array["ISBN:{$isbn}"]["thumbnail_url"];
+			$book_cover_url = str_replace("-S", "-M", $book_cover_url);
+			$book_isbn = $isbn;
+			$book_preview_url = $book_array["ISBN:{$isbn}"]["preview_url"];
+		
+			$book = new Book($book_title, $book_isbn, $book_author, $book_cover_url, $book_preview_url);
 
-		$book = new Book($book_title, $book_isbn, $book_author, $book_cover_url, $book_preview_url);
+			return $book;
+		}
+		
+		else {
+			$book_title = $book_array["items"][0]["volumeInfo"]["title"];
+			$book_author = $book_array["items"][0]["volumeInfo"]["authors"][0];
+			$book_cover_url = $book_array["items"][0]["volumeInfo"]["imageLinks"]["thumbnail"];
+			$book_isbn = $book_array["items"][0]["volumeInfo"]["industryIdentifiers"][1]["identifier"]; // ISBN13
+			$book_preview_url = $book_array["items"][0]["accessInfo"]["webReaderLink"];
+		
+			$book = new Book($book_title, $book_isbn, $book_author, $book_cover_url, $book_preview_url);
 
-		return $book;
+			return $book;
+		}
 		
 	}
 		
