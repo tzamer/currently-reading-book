@@ -4,7 +4,7 @@
 		Plugin Name: Currently Reading Book
 		Plugin URI: http://wpplugz.is-leet.com
 		Description: A simple plugin that shows the current book you are reading along with book preview and book information.
-		Version: 1.1
+		Version: 1.2.1
 		Author: Bostjan Cigan
 		Author URI: http://bostjan.gets-it.net
 		License: GPL v2
@@ -22,6 +22,7 @@
 	function currently_reading_book_install() {
 		
 		$plugin_options = array(
+			'version' => 1.2,
 			'book_isbn' => '',
 			'book_title' => '',
 			'book_author' => '',
@@ -30,6 +31,7 @@
 			'previous_book_title' => '',
 			'before_reading_msg' => 'Before this one I was reading ',
 			'book_preview' => '',
+			'preview_new_window' => false,
 			'visibility_settings' => array(
 				'show_isbn' => false,
 				'show_title' => false,
@@ -42,6 +44,20 @@
 		);
 		add_option('currently_reading_book_settings', $plugin_options);
 	
+	}
+
+	$options = get_option('currently_reading_book_settings');
+	if(!isset($options['version'])) {
+		update_currently_reading_book();
+	} 
+
+	function update_currently_reading_book() {
+
+		$options = get_option('currently_reading_book_settings');
+		$options['version'] = 1.2;
+		$options['preview_new_window'] = false;
+		update_option('currently_reading_book_settings', $options);	
+
 	}
 
 	function currently_reading_book_uninstall() {
@@ -61,7 +77,7 @@
 
 ?>
 
-			<a href="<?php echo $crb_settings['book_preview']; ?>">
+			<a href="<?php echo $crb_settings['book_preview']; ?>" <?php if($crb_settings['preview_new_window']) { ?> target="_blank" <?php } ?>>
 	        <img src="<?php echo $crb_settings['book_cover'] ?>" /></a>
 
 <?php
@@ -163,6 +179,7 @@
 			$show_previous = $_POST['crb_show_previous'];
 			$show_custom_msg = $_POST['crb_show_custom_msg'];
 			$show_powered_by = $_POST['crb_show_powered_by'];
+			$new_window_link = $_POST['crb_preview_new_window'];
 
 			$crb_settings['visibility_settings']['show_isbn'] = ($show_isbn) ? true : false;
 			$crb_settings['visibility_settings']['show_title'] = ($show_title) ? true : false;
@@ -171,6 +188,7 @@
 			$crb_settings['visibility_settings']['show_previous'] = ($show_previous) ? true : false;
 			$crb_settings['visibility_settings']['show_custom_msg'] = ($show_custom_msg) ? true : false;
 			$crb_settings['visibility_settings']['show_powered_by'] = ($show_powered_by) ? true : false;
+			$crb_settings['preview_new_window'] = ($new_window_link) ? true : false;
 			
 			if($isbn != $crb_settings['book_isbn']) {
 				$crb_settings['previous_book_title'] = $crb_settings['book_title'];
@@ -215,7 +233,7 @@
                 <form method="post" action="">
 				<table class="form-table">
 					<tr>
-						<th scope="row"><img src="<?php echo plugin_dir_url(__FILE__).'data/book.png'; ?>" height="96px" width="96px" /></th>
+						<th scope="row"><img src="<?php echo plugin_dir_url(__FILE__).'book.png'; ?>" height="96px" width="96px" /></th>
 						<td>
 							<p>Thank you for using this plugin.</p> 
                             <p>That means you wanted to have the same thing on your blog than me, to tell your readers what you're currently reading.</p>
@@ -277,6 +295,14 @@
 							<br />
             				<span class="description">If checked, the book cover will link to a webpage with the book preview.</span>
 						</td>
+					</tr>	
+					<tr>
+						<th scope="row"><label for="crb_preview_new_window">Open Book Preview in new window</label></th>
+						<td>
+    		    	  		<input type="checkbox" name="crb_preview_new_window" value="true" <?php if($crb_settings['preview_new_window'] == true) { ?>checked="checked"<?php } ?> />
+							<br />
+            				<span class="description">If checked, the book preview will open in a new window.</span>
+						</td>
 					</tr>		
 					<tr>
 						<th scope="row"><label for="crb_show_previous">Show Previous book</label></th>
@@ -315,7 +341,7 @@
 	function get_book_data($isbn) {
 		
 		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_URL, "https://www.googleapis.com/books/v1/volumes?q=ISBN".$isbn);
+		curl_setopt($curl, CURLOPT_URL, "https://www.googleapis.com/books/v1/volumes?q=".$isbn);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 		
 		$result = curl_exec($curl);
@@ -376,7 +402,8 @@
 	class currently_reading_book_widget extends WP_Widget {
 		
 		function currently_reading_book_widget() {
-			parent::WP_Widget(false, $name="Currently Reading Book");
+			$widget_ops = array('classname' => 'currently_reading_book_widget', 'description' => 'Display the recent book you have read!' );			
+			$this->WP_Widget('currently_reading_book_widget', 'Currently Reading Book', $widget_ops);
 		}
 		
 		function widget($args, $instance) {
