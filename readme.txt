@@ -41,7 +41,7 @@ None at the moment.
 == Changelog ==
 
 = 1.2.2 =
-* [Fix] Fixed a code in the bug; would prevent activation of plugin on servers that have short tags disabled.
+* [Fix] Fixed a bug in the code; would prevent activation of plugin on servers that have short tags disabled.
 
 = 1.2.1 =
 * If a book isn't found in Google Books, it now also uses Openlibrary APIs.
