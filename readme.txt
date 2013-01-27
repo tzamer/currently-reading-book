@@ -4,7 +4,7 @@ Donate link: http://gum.co/currently-reading-book
 Tags: reading book, currently reading, isbn book, my library, currently reading book, google books currently reading, isbn currently reading, simple currently reading book
 Requires at least: 2.0.2
 Tested up to: 3.5
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -39,6 +39,9 @@ None at the moment.
 3. Using the plugin as a widget
 
 == Changelog ==
+
+= 1.2.2 =
+* [Fix] Fixed a code in the bug; would prevent activation of plugin on servers that have short tags disabled.
 
 = 1.2.1 =
 * If a book isn't found in Google Books, it now also uses Openlibrary APIs.

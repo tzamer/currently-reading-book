@@ -22,7 +22,7 @@
 	function currently_reading_book_install() {
 		
 		$plugin_options = array(
-			'version' => 1.21,
+			'version' => 1.22,
 			'book_isbn' => '',
 			'book_title' => '',
 			'book_author' => '',
@@ -47,14 +47,14 @@
 	}
 
 	$options = get_option('currently_reading_book_settings');
-	if(!isset($options['version']) || ((float) $options['version']) < 1.21) {
+	if(!isset($options['version']) || ((float) $options['version']) < 1.22) {
 		update_currently_reading_book();
 	} 
 
 	function update_currently_reading_book() {
 
 		$options = get_option('currently_reading_book_settings');
-		$options['version'] = 1.21;
+		$options['version'] = 1.22;
 		$options['preview_new_window'] = (isset($options['preview_new_window'])) ? $options['preview_new_window'] : false;
 		update_option('currently_reading_book_settings', $options);	
 
@@ -336,7 +336,7 @@
 				</form>
 
 
-<?
+<?php
 
 	}
 	
