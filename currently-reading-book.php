@@ -4,7 +4,7 @@
 		Plugin Name: Currently Reading Book
 		Plugin URI: http://wpplugz.is-leet.com
 		Description: A simple plugin that shows the current book you are reading along with book preview and book information.
-		Version: 1.2.1
+		Version: 1.2.2
 		Author: Bostjan Cigan
 		Author URI: http://bostjan.gets-it.net
 		License: GPL v2
