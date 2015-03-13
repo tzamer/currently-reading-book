@@ -2,7 +2,7 @@
 
 	/* 
 		Plugin Name: Currently Reading Book
-		Plugin URI: http://bostjan.gets-it.net
+		Plugin URI: http://bostjan.gets-it.net/plugins
 		Description: A simple plugin that shows the current book you are reading along with book preview and book information.
 		Version: 1.2.3
 		Author: Bostjan Cigan
