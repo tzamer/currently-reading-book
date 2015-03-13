@@ -1,10 +1,10 @@
 === Plugin Name ===
 Contributors: ZeroCool51
-Donate link: http://gum.co/currently-reading-book
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SKMW3BAC8KE52
 Tags: reading book, currently reading, isbn book, my library, currently reading book, google books currently reading, isbn currently reading, simple currently reading book
 Requires at least: 2.0.2
 Tested up to: 4.0
-Stable tag: 1.2.2
+Stable tag: 1.2.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 

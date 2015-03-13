@@ -2,9 +2,9 @@
 
 	/* 
 		Plugin Name: Currently Reading Book
-		Plugin URI: http://wpplugz.is-leet.com
+		Plugin URI: http://bostjan.gets-it.net
 		Description: A simple plugin that shows the current book you are reading along with book preview and book information.
-		Version: 1.2.2
+		Version: 1.2.3
 		Author: Bostjan Cigan
 		Author URI: http://bostjan.gets-it.net
 		License: GPL v2
@@ -22,7 +22,7 @@
 	function currently_reading_book_install() {
 		
 		$plugin_options = array(
-			'version' => 1.22,
+			'version' => 1.23,
 			'book_isbn' => '',
 			'book_title' => '',
 			'book_author' => '',
@@ -47,14 +47,14 @@
 	}
 
 	$options = get_option('currently_reading_book_settings');
-	if(!isset($options['version']) || ((float) $options['version']) < 1.22) {
+	if(!isset($options['version']) || ((float) $options['version']) < 1.23) {
 		update_currently_reading_book();
 	} 
 
 	function update_currently_reading_book() {
 
 		$options = get_option('currently_reading_book_settings');
-		$options['version'] = 1.22;
+		$options['version'] = 1.23;
 		$options['preview_new_window'] = (isset($options['preview_new_window'])) ? $options['preview_new_window'] : false;
 		update_option('currently_reading_book_settings', $options);	
 
@@ -239,8 +239,8 @@
 					<tr>
 						<th scope="row"><img src="<?php echo plugin_dir_url(__FILE__).'book.png'; ?>" height="96px" width="96px" /></th>
 						<td>
-							<p>Thank you for using this plugin. If you like the plugin, you can <a href="http://gum.co/currently-reading-book">buy me a cup of coffee</a><script type="text/javascript" src="https://gumroad.com/js/gumroad-button.js"></script><script type="text/javascript" src="https://gumroad.com/js/gumroad.js"></script> :)</p>  
-                            <p>You can visit the official website @ <a href="http://wpplugz.is-leet.com">wpPlugz</a>.</p>
+							<p>Thank you for using this plugin. If you like the plugin, you can <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SKMW3BAC8KE52">buy me a cup of coffee</a> :)</p>  
+                            <p>You can visit the official website <a href="http://bostjan.gets-it.net/plugin/currently-reading-book">here</a>.</p>
                         </td>
 					</tr>		
 					<tr>
